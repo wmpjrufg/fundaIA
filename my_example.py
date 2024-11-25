@@ -84,26 +84,19 @@ def obj_ic_fundacoes(x, none_variable):
     # Variáveis de projeto
     h_x = x[0]
     h_y = x[1]
-    f_zmax = none_variable['Fz,max (kN)']
-    f_zmin = none_variable['Fz,min (kN)']
-    m_xmax = none_variable['Mx,max (kN.m)']
-    m_xmin = none_variable['Mx,min (kN.m)']
-    m_ymax = none_variable['My,max (kN.m)']
-    m_ymin = none_variable['My,min (kN.m)']
+    comb = none_variable['combinações']
     sigma_lim = none_variable['sigma_adm (kPa)']
 
     # Determina o volume do elemento de fundação
     vol = volume_fundacao(h_x, h_y)
 
-    # Criar dicionários para cada carga
-    cargas_comb = cargas_combinacoes([f_zmax, f_zmin, m_xmax, m_xmin, m_ymax, m_ymin])
-
     # Verificação da restrição
     g = []
-    for j in cargas_comb:
-        f_z = j[0]
-        m_x = j[1]
-        m_y = j[2]
+    for key, values in comb.items():
+        print(values)
+        f_z = values[0]
+        m_x = values[1]
+        m_y = values[2]
         sigma_sd_max, sigma_sd_min = calcular_sigma_max(f_z, m_x, m_y, h_x, h_y)  # Retorna um tuple
         g.append(sigma_sd_max / sigma_lim - 1)  # Usa o valor máximo como o mais crítico
 
